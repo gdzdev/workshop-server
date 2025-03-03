@@ -1,9 +1,8 @@
-package org.gdzdev.workshop.backend.inventory.domain.model;
+package org.gdzdev.workshop.backend.domain.model;
 
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -13,7 +12,7 @@ public class Category {
     private Long id;
     private String name;
     private String description;
+    private String imageUrl;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<Product> products;
 }

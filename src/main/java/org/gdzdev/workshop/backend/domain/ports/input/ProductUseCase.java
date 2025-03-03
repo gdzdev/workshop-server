@@ -1,7 +1,7 @@
-package org.gdzdev.workshop.backend.inventory.domain.ports.input;
+package org.gdzdev.workshop.backend.domain.ports.input;
 
-import org.gdzdev.workshop.backend.inventory.application.dto.ProductRequest;
-import org.gdzdev.workshop.backend.inventory.application.dto.ProductResponse;
+import org.gdzdev.workshop.backend.application.dto.ProductRequest;
+import org.gdzdev.workshop.backend.application.dto.ProductResponse;
 
 public interface ProductUseCase {
 

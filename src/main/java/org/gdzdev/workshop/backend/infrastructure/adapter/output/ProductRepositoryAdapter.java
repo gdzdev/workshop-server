@@ -1,11 +1,12 @@
-package org.gdzdev.workshop.backend.inventory.infrastructure.adapter.output;
+package org.gdzdev.workshop.backend.infrastructure.adapter.output;
 
 import lombok.RequiredArgsConstructor;
-import org.gdzdev.workshop.backend.inventory.domain.model.Product;
-import org.gdzdev.workshop.backend.inventory.domain.ports.output.ProductRepositoryPort;
-import org.gdzdev.workshop.backend.inventory.infrastructure.mappers.ProductMapper;
+import org.gdzdev.workshop.backend.domain.model.Product;
+import org.gdzdev.workshop.backend.domain.ports.output.ProductRepositoryPort;
+import org.gdzdev.workshop.backend.infrastructure.mappers.ProductMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
     private final ProductJpaRepository jpaRepository;
 
     @Override
-    public Iterable<Product> findAll() {
+    public List<Product> findAll() {
         return this.jpaRepository.findAll().stream()
                 .map(productMapper::toModel).collect(Collectors.toList());
     }

@@ -1,4 +1,4 @@
-package org.gdzdev.workshop.backend.inventory.infrastructure.entities;
+package org.gdzdev.workshop.backend.infrastructure.entities;
 
 import lombok.*;
 import jakarta.persistence.*;
@@ -8,8 +8,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "products")
@@ -40,4 +41,8 @@ public class ProductEntity {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryEntity category;
 }

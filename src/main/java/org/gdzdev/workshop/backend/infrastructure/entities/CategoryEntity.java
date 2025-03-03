@@ -1,4 +1,4 @@
-package org.gdzdev.workshop.backend.inventory.infrastructure.entities;
+package org.gdzdev.workshop.backend.infrastructure.entities;
 
 import lombok.*;
 import jakarta.persistence.*;
@@ -6,11 +6,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-@Data
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "categories")
@@ -26,6 +25,9 @@ public class CategoryEntity {
     @Column(nullable = false)
     private String description;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -33,7 +35,4 @@ public class CategoryEntity {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @OneToMany(mappedBy = "category")
-    private List<ProductEntity> products = new ArrayList<>();
 }

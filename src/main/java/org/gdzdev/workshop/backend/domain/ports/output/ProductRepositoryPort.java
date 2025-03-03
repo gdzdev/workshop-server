@@ -1,12 +1,13 @@
-package org.gdzdev.workshop.backend.inventory.domain.ports.output;
+package org.gdzdev.workshop.backend.domain.ports.output;
 
-import org.gdzdev.workshop.backend.inventory.domain.model.Product;
+import org.gdzdev.workshop.backend.domain.model.Product;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepositoryPort {
 
-    Iterable<Product> findAll();
+    List<Product> findAll();
 
     Optional<Product> findById(Long id);
 

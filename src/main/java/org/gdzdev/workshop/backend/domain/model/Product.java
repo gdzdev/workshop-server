@@ -1,15 +1,14 @@
-package org.gdzdev.workshop.backend.inventory.application.dto;
+package org.gdzdev.workshop.backend.domain.model;
 
 import lombok.*;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
-public class ProductResponse {
+public class Product {
 
     private Long id;
     private String code;
@@ -19,10 +18,7 @@ public class ProductResponse {
     private BigDecimal cost;
     private BigDecimal price;
     private Boolean available;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Category category;
     private LocalDateTime createdAt;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
-
 }
