@@ -10,6 +10,7 @@ import org.gdzdev.workshop.backend.domain.ports.input.CategoryUseCase;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/categories")
