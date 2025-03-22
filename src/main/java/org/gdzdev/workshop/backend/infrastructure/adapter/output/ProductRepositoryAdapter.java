@@ -24,6 +24,12 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
     }
 
     @Override
+    public List<Product> findByNameOrCode(String name, String code) {
+        return this.jpaRepository.findByNameContainingIgnoreCaseOrCodeContainingIgnoreCase(name, code)
+                .stream().map(productMapper::toModel).collect(Collectors.toList());
+    }
+
+    @Override
     public Optional<Product> findById(Long id) {
         return this.jpaRepository.findById(id)
                 .map(productMapper::toModel);

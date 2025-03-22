@@ -31,6 +31,14 @@ public class ProductUseCaseImpl implements ProductUseCase {
     }
 
     @Override
+    public List<ProductResponse> searchByNameOrCode(String keyword) {
+        if (keyword.isEmpty() || keyword.trim().length() < 3) {
+            return List.of();
+        }
+        return this.productMapper.toResponseList(this.productRepository.findByNameOrCode(keyword, keyword));
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public ProductResponse fetchById(Long id) {
         return this.productRepository.findById(id).map(productMapper::toResponse)
