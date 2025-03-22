@@ -9,6 +9,8 @@ public interface ProductRepositoryPort {
 
     List<Product> findAll();
 
+    List<Product> findByNameOrCode(String name, String code);
+
     Optional<Product> findById(Long id);
 
     Product save(Product product);

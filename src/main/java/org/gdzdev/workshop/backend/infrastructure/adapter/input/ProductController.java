@@ -21,6 +21,11 @@ public class ProductController {
         return ResponseEntity.ok(this.useCase.fetchAll());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Iterable<ProductResponse>> searchByKeyword(@RequestParam String keyword) {
+        return ResponseEntity.ok(this.useCase.searchByNameOrCode(keyword));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> searchById(@PathVariable Long id) {
         return ResponseEntity.ok(this.useCase.fetchById(id));
