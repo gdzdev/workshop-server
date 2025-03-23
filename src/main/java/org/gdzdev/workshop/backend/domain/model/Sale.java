@@ -4,13 +4,12 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class Sale {
 
     private Long id;
@@ -18,6 +17,11 @@ public class Sale {
     private LocalDateTime saleDate;
     private BigDecimal grandTotal;
     private PaymentStatus paymentStatus;
-    private List<SaleDetail> saleDetails;
 
+    @Builder.Default
+    private List<SaleDetail> saleDetails = new ArrayList<>();
+
+    public void addDetails(List<SaleDetail> saleDetails) {
+        this.saleDetails.addAll(saleDetails);
+    }
 }
