@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.gdzdev.workshop.backend.application.dto.AddItemRequest;
 import org.gdzdev.workshop.backend.application.dto.CartResponse;
 import org.gdzdev.workshop.backend.domain.exception.ProductNotAvailbleException;
-import org.gdzdev.workshop.backend.domain.exception.ProductNotExistsException;
 import org.gdzdev.workshop.backend.domain.exception.ProductNotFoundException;
 import org.gdzdev.workshop.backend.domain.model.Cart;
 import org.gdzdev.workshop.backend.domain.model.CartItem;
@@ -38,7 +37,7 @@ public class CartUseCaseImpl implements CartUseCase {
     @Override
     public CartResponse addItem(AddItemRequest request) {
         Product product = this.productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new ProductNotExistsException("The product you are trying to add does not exist"));
+                .orElseThrow(() -> new ProductNotAvailbleException("The product you are trying to add does not exist"));
 
         if (product.getStock() < request.getQuantity()) {
             throw new ProductNotAvailbleException("There is not enough stock");
