@@ -1,26 +1,21 @@
 package org.gdzdev.workshop.backend.application.usecase;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+import org.gdzdev.workshop.backend.domain.model.*;
 import org.gdzdev.workshop.backend.application.dto.SaleRequest;
+import org.springframework.transaction.annotation.Transactional;
 import org.gdzdev.workshop.backend.application.dto.SaleResponse;
+import org.gdzdev.workshop.backend.domain.ports.input.CartUseCase;
+import org.gdzdev.workshop.backend.domain.ports.input.SaleUseCase;
+import org.gdzdev.workshop.backend.infrastructure.mappers.SaleMapper;
+import org.gdzdev.workshop.backend.domain.ports.input.SaleDetailsUseCase;
 import org.gdzdev.workshop.backend.domain.exception.CartNotFoundException;
 import org.gdzdev.workshop.backend.domain.exception.SaleNotFoundException;
-import org.gdzdev.workshop.backend.domain.model.*;
-import org.gdzdev.workshop.backend.domain.ports.input.CartUseCase;
-import org.gdzdev.workshop.backend.domain.ports.input.SaleDetailsUseCase;
-import org.gdzdev.workshop.backend.domain.ports.input.SaleUseCase;
-import org.gdzdev.workshop.backend.domain.ports.input.StockUseCase;
 import org.gdzdev.workshop.backend.domain.ports.output.SaleRepositoryPort;
-import org.gdzdev.workshop.backend.infrastructure.adapter.output.SaleDetailJpaRepository;
-import org.gdzdev.workshop.backend.infrastructure.mappers.SaleMapper;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -62,8 +57,8 @@ public class SaleUseCaseImpl implements SaleUseCase {
         sale = this.saleRepository.createSale(sale);
 
         List<SaleDetail> saleDetails = saleDetailsUseCase.createSaleDetails(sale, cart.getCartItems());
-
-        sale.setSaleDetails(saleDetails);
+        
+        sale.addDetails(saleDetails);
 
         this.cartUseCase.clearCart();
 
