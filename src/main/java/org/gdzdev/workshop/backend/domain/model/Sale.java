@@ -16,7 +16,7 @@ public class Sale {
     private String customerName;
     private LocalDateTime saleDate;
     private BigDecimal grandTotal;
-    private PaymentStatus paymentStatus;
+    private SaleStatus saleStatus;
 
     @Builder.Default
     private List<SaleDetail> saleDetails = new ArrayList<>();

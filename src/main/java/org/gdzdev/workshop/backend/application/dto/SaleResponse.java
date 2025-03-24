@@ -3,7 +3,7 @@ package org.gdzdev.workshop.backend.application.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.gdzdev.workshop.backend.domain.model.PaymentStatus;
+import org.gdzdev.workshop.backend.domain.model.SaleStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,7 +25,7 @@ public class SaleResponse {
     private BigDecimal grandTotal;
 
     @JsonProperty("payment_status")
-    private PaymentStatus paymentStatus;
+    private SaleStatus saleStatus;
 
     @JsonProperty("sale_details")
     private List<SaleDetailResponse> saleDetails;

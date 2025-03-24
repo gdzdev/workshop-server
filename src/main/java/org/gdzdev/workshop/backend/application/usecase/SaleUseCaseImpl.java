@@ -49,7 +49,7 @@ public class SaleUseCaseImpl implements SaleUseCase {
 
         Sale sale = Sale.builder()
                 .customerName(request.getCustomerName())
-                .paymentStatus(request.getPaymentStatus())
+                .saleStatus(request.getSaleStatus())
                 .saleDate(LocalDateTime.now())
                 .grandTotal(cart.getGrandTotal())
                 .build();
