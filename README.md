@@ -286,25 +286,16 @@ Respuesta: El producto actualizado.
 
 ### Eliminar una categoria
 - **Método**: DELETE
-
 - **URL**: `/api/v1/categories/{id}`
-
 #### Parámetros:
-
 - **id**: ID de la categoria a eliminar.
-
 - **Respuesta**: Código de estado 204 No Content.
-
 ---
 
 ## Carrito de Compras 🛒
-
 ### Obtener el carrito actual
-
 - **Método**: GET
-
 - **URL**: `/api/v1/carts`
-
 - **Respuesta**:
 ```json
     {
@@ -327,13 +318,9 @@ Respuesta: El producto actualizado.
       }
     }
 ```
-
 ### Obtener el total del carrito actual
-
 - **Método**: GET
-
 - **URL**: `/api/v1/carts/total`
-
 - **Respuesta**:
 ```json
     {
@@ -343,13 +330,9 @@ Respuesta: El producto actualizado.
       }
     }
 ```
-
 ### Añadir producto al carrito
-
 - **Método**: POST
-
 - **URL**: `/api/v1/carts/add`
-
 - **Cuerpo de la solicitud**:
 ```json
     {
@@ -357,7 +340,6 @@ Respuesta: El producto actualizado.
       "quantity": 1
     }
 ```
-
 - **Respuesta**:
 ```json
     {
@@ -367,15 +349,10 @@ Respuesta: El producto actualizado.
       }
     }
 ```
-
 ### Eliminar producto al carrito
-
 - **Método**: DELETE
-
 - **URL**: `/api/v1/carts/delete/{itemId}`
-
 - **Parametros**: ID del item
-
 - **Respuesta**:
 ```json
     {
@@ -385,10 +362,7 @@ Respuesta: El producto actualizado.
       }
     }
 ```
-
 ### Vaciar carrito
 - **Método**: DELETE
-
 - **URL**: `/api/v1/carts/empty`
-
 - **Respuesta**: Código de estado 204 No Content
