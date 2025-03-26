@@ -55,7 +55,7 @@ public class CartUseCaseImpl implements CartUseCase {
             newCartItem.setQuantity(request.getQuantity());
             this.cartRepository.saveCart(newCartItem);
         }
-        return CartResponse.builder().message("Product added to cart").build();
+        return CartResponse.builder().cartMessage("Product added to cart").build();
     }
 
     @Override
@@ -64,19 +64,19 @@ public class CartUseCaseImpl implements CartUseCase {
             this.cartRepository.removeFromCart(itemId);
             return true;
         }).orElseThrow(() -> new ProductNotFoundException("The product you are trying to remove does not exist"));
-        return CartResponse.builder().message("Product removed from cart").build();
+        return CartResponse.builder().cartMessage("Product removed from cart").build();
     }
 
     @Override
-    public CartResponse clearCart() {
+    public void clearCart() {
         this.cartRepository.emptyCart();
-        return CartResponse.builder().message("Cart is empty").build();
+        CartResponse.builder().cartMessage("Cart is empty").build();
     }
 
     @Override
     public CartResponse cartTotal() {
         BigDecimal total = this.cartRepository.findAllCartItems().stream().map(CartItem::getTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        return CartResponse.builder().message(String.format("$ %.2f", total)).build();
+        return CartResponse.builder().cartMessage(String.format("$ %.2f", total)).build();
     }
 }

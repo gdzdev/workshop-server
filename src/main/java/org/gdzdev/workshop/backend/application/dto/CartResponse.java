@@ -1,5 +1,6 @@
 package org.gdzdev.workshop.backend.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,5 +8,6 @@ import lombok.Data;
 @Builder
 public class CartResponse {
 
-    private String message;
+    @JsonProperty("cart_message")
+    private String cartMessage;
 }

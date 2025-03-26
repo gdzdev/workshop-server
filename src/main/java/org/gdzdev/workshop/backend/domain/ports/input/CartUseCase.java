@@ -12,7 +12,7 @@ public interface CartUseCase {
 
     CartResponse removeItem(Long itemId);
 
-    CartResponse clearCart();
+    void clearCart();
 
     CartResponse cartTotal();
 }

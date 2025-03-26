@@ -3,7 +3,7 @@ package org.gdzdev.workshop.backend.infrastructure.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.gdzdev.workshop.backend.domain.model.PaymentStatus;
+import org.gdzdev.workshop.backend.domain.model.SaleStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -28,7 +28,7 @@ public class SaleEntity {
     private BigDecimal grandTotal;
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus;
+    private SaleStatus saleStatus;
 
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SaleDetailEntity> saleDetails;
