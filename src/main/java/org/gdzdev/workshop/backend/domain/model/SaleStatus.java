@@ -1,5 +1,5 @@
 package org.gdzdev.workshop.backend.domain.model;
 
 public enum SaleStatus {
-    PENDING_PAYMENT, COMPLETED
+    NO_AMOUNT, PENDING_PAYMENT, COMPLETED
 }
