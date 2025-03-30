@@ -1,0 +1,62 @@
+package org.gdzdev.workshop.backend.infrastructure.rest;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.gdzdev.workshop.backend.application.dto.ApiResponse;
+import org.gdzdev.workshop.backend.application.dto.product.ProductRequest;
+import org.gdzdev.workshop.backend.domain.port.input.ProductService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@CrossOrigin(origins = "https://simplified-inventory-management.vercel.app")
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/products")
+public class ProductController {
+
+    private final ProductService useCase;
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<?>> searchAll() {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .response(this.useCase.fetchAll()).status("success").build());
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<ApiResponse<?>> getPaginated(@PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .response(this.useCase.fetchAllPaginated(pageable)).status("success").build());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<?>> searchByKeyword(@RequestParam String keyword) {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .response(this.useCase.fetchByNameOrCode(keyword)).status("success").build());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<?>> searchById(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.builder().response(this.useCase.fetchById(id)).status("success").build());
+    }
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<?>> create(@Valid @RequestBody ProductRequest productRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.builder().response(this.useCase.create(productRequest)).status("success").build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<?>> modify(@PathVariable Long id, @Valid @RequestBody ProductRequest productRequest) {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .response(this.useCase.update(id, productRequest)).status("success").build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        this.useCase.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+}

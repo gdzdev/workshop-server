@@ -1,28 +1,40 @@
 package org.gdzdev.workshop.backend.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.gdzdev.workshop.backend.application.dto.CartProduct;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CartItem {
 
     private Long id;
+    private ItemType type;
     private Integer quantity;
     private CartProduct product;
+    private Servicing servicing;
+    private BigDecimal subTotal;
 
-    public BigDecimal getTotal() {
-        if (this.product == null || this.quantity == null) {
-            return BigDecimal.ZERO;
+    public void increaseQuantity() {
+        this.quantity++;
+    }
+
+    public void decreaseQuantity() {
+        if (this.quantity > 1) {
+            this.quantity--;
         }
-        return this.product.getPrice().multiply(BigDecimal.valueOf(this.quantity));
+    }
+
+    public BigDecimal getSubTotal() {
+        if (type == ItemType.PRODUCT && product != null) {
+            return product.getPrice().multiply(BigDecimal.valueOf(quantity));
+        } else if (type == ItemType.SERVICE && servicing != null) {
+            return servicing.getPrice().multiply(BigDecimal.valueOf(quantity));
+        }
+        return BigDecimal.ZERO;
     }
 
 }
