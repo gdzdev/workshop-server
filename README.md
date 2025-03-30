@@ -7,8 +7,6 @@ Esta documentación describe los endpoints disponibles en la API para gestionar 
 ## Base URL
 La base URL para acceder a la API es: https://workshop-server.up.railway.app
 
-
-
 ---
 
 ## Productos 📦
@@ -16,7 +14,7 @@ La base URL para acceder a la API es: https://workshop-server.up.railway.app
 ### Obtener todos los productos
 - **Método**: `GET`
 - **URL**: `/api/v1/products`
-- **Respuesta**:
+#### **Respuesta**:
 ```json
   {
     "status": "success",
@@ -36,6 +34,65 @@ La base URL para acceder a la API es: https://workshop-server.up.railway.app
       }
     ]
   }
+```
+### Obtener todo los productos (Paginación)
+- **Método**: `GET`
+- **URL**: `/api/v1/products/page?page=0&size=10&sort=name`
+####  Parámetros:
+
+Estos parametros son opcionales
+- `page`: Número de página -- por defecto `0`
+- `size`: Cantidad de items por página -- por defecto `10`
+- `sort`: Campo(s) de ordenamiento (ej: `name,asc`, `code, desc`) -- Por defecto `Sin ordenamiento`
+
+#### **Respuesta:**
+```json
+
+    {
+    "status": "success",
+    "response": {
+    "content": [
+        {
+        "id": 1,
+        "code": "R001",
+        "name": "Filtro de Aceite para Moto",
+        "imageUrl": "https://example.com/oil-filter-moto.jpg",
+        "stock": 50,
+        "cost": 8.50,
+        "price": 15.99,
+        "categoryName": "Repuestos de Motor",
+        "available": true,
+        "createdAt": "2025-03-29 17:54:41",
+        "updatedAt": "2025-03-29 17:54:41"
+        }
+    ],
+    "pageable": {
+        "pageNumber": 0,
+        "pageSize": 10,
+        "sort": {
+            "sorted": false,
+            "unsorted": true,
+            "empty": true
+        },
+            "offset": 0,
+            "paged": true,
+            "unpaged": false
+        },
+            "totalPages": 3,
+            "totalElements": 30,
+            "last": false,
+            "first": true,
+            "size": 10,
+            "number": 0,
+            "sort": {
+            "sorted": false,
+            "unsorted": true,
+            "empty": true
+        },
+            "numberOfElements": 10,
+            "empty": false
+        }
+    }
 ```
 
 ### Buscar productos por palabra clave
@@ -77,7 +134,7 @@ La base URL para acceder a la API es: https://workshop-server.up.railway.app
 
 - **id**: ID del producto.
 
-- **Respuesta**:
+#### **Respuesta**:
 ```json
   {
     "status": "success",
@@ -116,7 +173,7 @@ La base URL para acceder a la API es: https://workshop-server.up.railway.app
     "available": true
   }
 ```
-- **Respuesta**:
+#### **Respuesta (`200`, OK)**:
 ```json
   {
     "status": "success",
@@ -136,6 +193,42 @@ La base URL para acceder a la API es: https://workshop-server.up.railway.app
   } 
 ```
 
+#### **Respuesta (`400`, BAD REQUEST)**:
+
+Mostrara un json con las validaciones que no pasaron y los mensajes de error
+
+```json
+{
+    "status": "failed",
+    "response": {
+        "message": "Validation error",
+        "errors": {
+            "code": "El código no puede estar vacío",
+            "cost": "El costo debe ser mayor a 0",
+            "price": "El precio debe ser mayor a 0",
+            "name": "El nombre no puede estar vacío"
+        },
+        "timestamp": "2025-03-30",
+        "status": 400
+    }
+}
+```
+
+#### **Respuesta (`404`, NOT FOUNT)**
+
+Si la categoria no existe
+
+```json
+{
+    "status": "failed",
+    "response": {
+        "message": "Category not found",
+        "timestamp": "2025-03-30",
+        "status": 404
+    }
+}
+```
+
 ### Actualizar un producto
 
 - **Método**: `PUT`
@@ -148,7 +241,7 @@ La base URL para acceder a la API es: https://workshop-server.up.railway.app
 
 - **Cuerpo de la solicitud**: Similar a la creación.
 
-Respuesta: El producto actualizado.
+##### **Respuesta: El producto actualizado ().**
 
 ```json
   {
@@ -168,7 +261,41 @@ Respuesta: El producto actualizado.
     }
   } 
 ```
+#### **Respuesta (`400`, BAD REQUEST)**:
 
+Mostrara un json con las validaciones que no pasaron y los mensajes de error
+
+```json
+{
+    "status": "failed",
+    "response": {
+        "message": "Validation error",
+        "errors": {
+            "code": "El código no puede estar vacío",
+            "cost": "El costo debe ser mayor a 0",
+            "price": "El precio debe ser mayor a 0",
+            "name": "El nombre no puede estar vacío"
+        },
+        "timestamp": "2025-03-30",
+        "status": 400
+    }
+}
+```
+
+#### **Respuesta (`404`, NOT FOUNT)**
+
+Si la categoria no existe
+
+```json
+{
+    "status": "failed",
+    "response": {
+        "message": "Category not found",
+        "timestamp": "2025-03-30",
+        "status": 404
+    }
+}
+```
 ## Eliminar un producto
 - **Método**: DELETE
 
@@ -177,8 +304,25 @@ Respuesta: El producto actualizado.
 #### Parámetros:
 
 - **id**: ID del producto a eliminar.
+- 
+#### **Respuesta**: Código de estado (`204`, NO CONTENT).
 
-- **Respuesta**: Código de estado 204 No Content.
+Si todo sale bien
+
+#### **Respuesta (`404`, NOT FOUNT)**
+
+Si el producto que se trata de eliminar no existe
+
+```json
+{
+  "status": "failed",
+  "response": {
+    "message": "Product with id 200 not found",
+    "timestamp": "2025-03-30",
+    "status": 404
+  }
+}
+```
 
 ---
 
@@ -268,7 +412,7 @@ Respuesta: El producto actualizado.
 
 - **Cuerpo de la solicitud**: Similar a la creación.
 
-Respuesta: El producto actualizado.
+#### **Respuesta: (`200`, OK)**
 
 ```json
   {
@@ -289,10 +433,26 @@ Respuesta: El producto actualizado.
 - **URL**: `/api/v1/categories/{id}`
 #### Parámetros:
 - **id**: ID de la categoria a eliminar.
-- **Respuesta**: Código de estado 204 No Content.
+#### **Respuesta**: Código de estado 204 No Content.
+Si todo sale bien
+
+#### **Respuesta**: (404, NOT FOUNT)
+Si no se encuentra
+```json
+{
+    "status": "failed",
+    "response": {
+        "message cart": "Category with id '100' not found",
+        "timestamp": "2025-03-30",
+        "status": 404
+    }
+}
+```
+
 ---
 
 ## Carrito de Compras 🛒
+
 ### Obtener el carrito actual
 - **Método**: GET
 - **URL**: `/api/v1/carts`
@@ -301,20 +461,22 @@ Respuesta: El producto actualizado.
     {
       "status": "success",
       "response": {
-        "cartItems": [
-          {
-            "id": 5,
-            "quantity": 1,
-            "product": {
-              "id": 10,
-              "code": "H005",
-              "name": "Producto A",
-              "price": 60.00
-            },
-            "total": 60.00
-          }
-        ],
-        "grandTotal": 60.00
+            "cartItems": [
+              {
+                "id": 1,
+                "type": "PRODUCT",
+                "quantity": 3,
+                "product": {
+                      "id": 4,
+                      "code": "R004",
+                      "name": "Carburador para Moto 150cc",
+                      "stock": 20,
+                      "price": 85.00
+                },
+                "subTotal": 255.00
+              }
+            ],
+        "grandTotal": 255.00
       }
     }
 ```
@@ -333,14 +495,14 @@ Respuesta: El producto actualizado.
 ### Añadir producto al carrito
 - **Método**: POST
 - **URL**: `/api/v1/carts/add`
-- **Cuerpo de la solicitud**:
+#### **Cuerpo de la solicitud**:
 ```json
     {
-      "product_id": 10,
+      "item_id": 1,
       "quantity": 1
     }
 ```
-- **Respuesta**:
+#### **Respuesta**:
 ```json
     {
       "status": "success",
@@ -349,10 +511,46 @@ Respuesta: El producto actualizado.
       }
     }
 ```
+
+### Incrementar Cantidad +
+- **Metodo**: PATCH
+- **URL**: `/api/v1/carts/items/{ItemId}/increase`
+#### **Parametros**
+
+Pasar el `ID` del item
+#### **Respuesta: (`200`, OK)**
+```json
+{
+    "status": "success",
+    "response": {
+        "cart_message": "Increased item quantity"
+    }
+}
+```
+
+### Decrementar Cantidad -
+- **Metodo**: PATCH
+- **URL**: `/api/v1/carts/items/{ItemtId}/decrease`
+#### **Parametros**
+
+Pasar el `ID` del item
+
+#### **Respuesta: (`200`, OK)**
+
+```json
+{
+  "status": "success",
+  "response": {
+    "cart_message": "Decreased item quantity"
+  }
+}
+```
 ### Eliminar producto al carrito
 - **Método**: DELETE
-- **URL**: `/api/v1/carts/delete/{itemId}`
-- **Parametros**: ID del item
+- **URL**: `/api/v1/carts/items/{ItemId}`
+#### **Parametros**: 
+
+Pasar el `ID` del item
 - **Respuesta**:
 ```json
     {
@@ -365,4 +563,4 @@ Respuesta: El producto actualizado.
 ### Vaciar carrito
 - **Método**: DELETE
 - **URL**: `/api/v1/carts/empty`
-- **Respuesta**: Código de estado 204 No Content
+#### **Respuesta: (`204`, NO CONTENT)**
