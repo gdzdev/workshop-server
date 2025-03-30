@@ -7,7 +7,7 @@ import org.gdzdev.workshop.backend.domain.port.input.CartService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "https://simplified-inventory-management.vercel.app")
+@CrossOrigin(origins = {"https://simplified-inventory-management.vercel.app", "*"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/carts")
