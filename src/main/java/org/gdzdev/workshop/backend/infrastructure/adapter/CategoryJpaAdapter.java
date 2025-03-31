@@ -3,7 +3,7 @@ package org.gdzdev.workshop.backend.infrastructure.adapter;
 import lombok.RequiredArgsConstructor;
 import org.gdzdev.workshop.backend.domain.model.Category;
 import org.gdzdev.workshop.backend.domain.port.out.CategoryRepositoryPort;
-import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.CategoryMapper;
+import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.CategoryEntityMapper;
 import org.gdzdev.workshop.backend.infrastructure.adapter.repos.CategoryJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CategoryJpaAdapter implements CategoryRepositoryPort {
 
-    private final CategoryMapper categoryMapper;
+    private final CategoryEntityMapper categoryMapper;
     private final CategoryJpaRepository jpaRepository;
 
     @Override

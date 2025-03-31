@@ -3,7 +3,7 @@ package org.gdzdev.workshop.backend.infrastructure.adapter;
 import lombok.RequiredArgsConstructor;
 import org.gdzdev.workshop.backend.domain.model.CartItem;
 import org.gdzdev.workshop.backend.domain.port.out.CartRepositoryPort;
-import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.CartMapper;
+import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.CartEntityMapper;
 import org.gdzdev.workshop.backend.infrastructure.adapter.repos.CartJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CartAdapter implements CartRepositoryPort {
 
-    private final CartMapper cartMapper;
+    private final CartEntityMapper cartMapper;
     private final CartJpaRepository cartJpaRepository;
 
     @Override

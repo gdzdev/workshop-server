@@ -8,7 +8,7 @@ import org.gdzdev.workshop.backend.domain.exception.CategoryNotExistsException;
 import org.gdzdev.workshop.backend.domain.exception.CategoryNotFoundException;
 import org.gdzdev.workshop.backend.domain.port.input.CategoryService;
 import org.gdzdev.workshop.backend.domain.port.out.CategoryRepositoryPort;
-import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.CategoryMapper;
+import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.CategoryEntityMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
-    private final CategoryMapper categoryMapper;
+    private final CategoryEntityMapper categoryMapper;
     private final CategoryRepositoryPort categoryRepository;
 
     @Override

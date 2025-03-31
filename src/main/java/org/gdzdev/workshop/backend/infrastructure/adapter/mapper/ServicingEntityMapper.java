@@ -5,7 +5,7 @@ import org.gdzdev.workshop.backend.infrastructure.adapter.entity.ServicingEntity
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface ServicingMapper {
+public interface ServicingEntityMapper {
 
     Servicing toModel(ServicingEntity servicingEntity);
     ServicingEntity toEntity(Servicing servicing);
