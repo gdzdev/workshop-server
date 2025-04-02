@@ -39,16 +39,16 @@ public class CartController {
                 .response(this.useCase.removeProductFromCart(itemId)).status("success").build());
     }
 
-    @PatchMapping("/items/{productId}/increase")
-    public ResponseEntity<ApiResponse<?>> increaseItemQuantity(@PathVariable Long productId) {
+    @PatchMapping("/items/{itemId}/increase")
+    public ResponseEntity<ApiResponse<?>> increaseItemQuantity(@PathVariable Long itemId) {
         return ResponseEntity.ok(ApiResponse.builder()
-                .response(this.useCase.increaseItemQuantity(productId)).status("success").build());
+                .response(this.useCase.increaseItemQuantity(itemId)).status("success").build());
     }
 
-    @PatchMapping("/items/{productId}/decrease")
-    public ResponseEntity<ApiResponse<?>> decreaseItemQuantity(@PathVariable Long productId) {
+    @PatchMapping("/items/{itemId}/decrease")
+    public ResponseEntity<ApiResponse<?>> decreaseItemQuantity(@PathVariable Long itemId) {
         return ResponseEntity.ok(ApiResponse.builder()
-                .response(this.useCase.decreaseItemQuantity(productId)).status("success").build());
+                .response(this.useCase.decreaseItemQuantity(itemId)).status("success").build());
     }
 
     @DeleteMapping

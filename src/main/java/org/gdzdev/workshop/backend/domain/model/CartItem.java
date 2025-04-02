@@ -1,7 +1,8 @@
 package org.gdzdev.workshop.backend.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.gdzdev.workshop.backend.domain.enums.ItemType;
 
 import java.math.BigDecimal;
 
