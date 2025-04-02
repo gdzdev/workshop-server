@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface CategoryMapper {
+public interface CategoryEntityMapper {
 
     Category toModel(CategoryEntity categoryEntity);
 

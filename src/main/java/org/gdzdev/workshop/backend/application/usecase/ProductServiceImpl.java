@@ -7,12 +7,13 @@ import org.gdzdev.workshop.backend.domain.exception.CategoryNotFoundException;
 import org.gdzdev.workshop.backend.domain.exception.ProductNotExistsException;
 import org.gdzdev.workshop.backend.domain.exception.ProductAlreadyExistsException;
 import org.gdzdev.workshop.backend.domain.exception.ProductNotFoundException;
+import org.gdzdev.workshop.backend.domain.model.CartProduct;
 import org.gdzdev.workshop.backend.domain.model.Category;
 import org.gdzdev.workshop.backend.domain.model.Product;
 import org.gdzdev.workshop.backend.domain.port.input.ProductService;
 import org.gdzdev.workshop.backend.domain.port.out.CategoryRepositoryPort;
 import org.gdzdev.workshop.backend.domain.port.out.ProductRepositoryPort;
-import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.ProductMapper;
+import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.ProductEntityMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductMapper productMapper;
+    private final ProductEntityMapper productMapper;
     private final CategoryRepositoryPort categoryRepository;
     private final ProductRepositoryPort productRepository;
 
@@ -32,6 +33,11 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<ProductResponse> fetchAll() {
         return this.productMapper.toResponseList(this.productRepository.findAll());
+    }
+
+    @Override
+    public List<CartProduct> fetchCartProductsAvailable() {
+        return this.productRepository.findAllByAvailable();
     }
 
     @Override
@@ -75,7 +81,6 @@ public class ProductServiceImpl implements ProductService {
         return this.productRepository.findById(id).map(productDb -> {
             productDb.setCode(productRequest.getCode());
             productDb.setName(productRequest.getName());
-            productDb.setAvailable(productRequest.getAvailable());
             productDb.setImageUrl(productRequest.getImageUrl());
             productDb.setStock(productRequest.getStock());
             productDb.setCost(productRequest.getCost());

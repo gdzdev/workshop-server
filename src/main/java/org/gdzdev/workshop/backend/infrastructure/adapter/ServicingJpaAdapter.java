@@ -3,7 +3,7 @@ package org.gdzdev.workshop.backend.infrastructure.adapter;
 import lombok.RequiredArgsConstructor;
 import org.gdzdev.workshop.backend.domain.model.Servicing;
 import org.gdzdev.workshop.backend.domain.port.out.ServicingRepositoryPort;
-import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.ServicingMapper;
+import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.ServicingEntityMapper;
 import org.gdzdev.workshop.backend.infrastructure.adapter.repos.ServicingJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ServicingJpaAdapter implements ServicingRepositoryPort {
 
-    private final ServicingMapper servicingMapper;
+    private final ServicingEntityMapper servicingMapper;
     private final ServicingJpaRepository jpaRepository;
 
     @Override

@@ -11,7 +11,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface ProductMapper {
+public interface ProductEntityMapper {
 
     @Mapping(source = "categoryId", target = "category.id")
     Product toModel(ProductRequest productRequest);

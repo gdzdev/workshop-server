@@ -52,4 +52,10 @@ public class ProductEntity {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
+
+    @PreUpdate
+    @PrePersist
+    public void checkAvailability() {
+        this.available = this.stock != 0;
+    }
 }

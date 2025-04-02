@@ -11,4 +11,6 @@ public interface ProductJpaRepository extends JpaRepository<ProductEntity, Long>
     Optional<ProductEntity> findByCode(String code);
 
     List<ProductEntity> findByNameContainingIgnoreCaseOrCodeContainingIgnoreCase(String name, String code);
+
+    List<ProductEntity> findByAvailableTrue();
 }
