@@ -2,14 +2,14 @@ package org.gdzdev.workshop.backend.infrastructure.rest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.gdzdev.workshop.backend.application.dto.ApiResponse;
-import org.gdzdev.workshop.backend.application.dto.product.ProductRequest;
-import org.gdzdev.workshop.backend.domain.port.input.ProductService;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.web.PageableDefault;
+import org.gdzdev.workshop.backend.application.dto.ApiResponse;
+import org.gdzdev.workshop.backend.domain.port.input.ProductService;
+import org.gdzdev.workshop.backend.application.dto.product.ProductRequest;
 
 @CrossOrigin(origins = "https://simplified-inventory-management.vercel.app")
 @RestController
@@ -23,6 +23,12 @@ public class ProductController {
     public ResponseEntity<ApiResponse<?>> searchAll() {
         return ResponseEntity.ok(ApiResponse.builder()
                 .response(this.useCase.fetchAll()).status("success").build());
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity<ApiResponse<?>> getAllProductsAvailable() {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .response(this.useCase.fetchCartProductsAvailable()).status("success").build());
     }
 
     @GetMapping("/page")

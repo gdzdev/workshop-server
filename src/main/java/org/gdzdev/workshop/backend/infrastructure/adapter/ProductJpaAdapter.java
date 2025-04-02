@@ -18,49 +18,55 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductJpaAdapter implements ProductRepositoryPort {
 
-    private final ProductEntityMapper productMapper;
+    private final ProductEntityMapper productEntityMapper;
     private final ProductJpaRepository jpaRepository;
 
     @Override
     public List<Product> findAll() {
         return this.jpaRepository.findAll().stream()
-                .map(productMapper::toModel).collect(Collectors.toList());
+                .map(productEntityMapper::toModel).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CartProduct> findAllByAvailable() {
+        return this.jpaRepository.findByAvailableTrue().stream()
+                .map(productEntityMapper::toCartProduct).collect(Collectors.toList());
     }
 
     @Override
     public Optional<CartProduct> findCartProduct(Long id) {
         return this.jpaRepository.findById(id)
-                .map(productMapper::toCartProduct);
+                .map(productEntityMapper::toCartProduct);
     }
 
     @Override
     public Page<Product> findAllPaginated(Pageable pageable) {
         return jpaRepository.findAll(pageable)
-                .map(productMapper::toModel);
+                .map(productEntityMapper::toModel);
     }
 
     @Override
     public List<Product> findByNameOrCode(String name, String code) {
         return this.jpaRepository.findByNameContainingIgnoreCaseOrCodeContainingIgnoreCase(name, code)
-                .stream().map(productMapper::toModel).collect(Collectors.toList());
+                .stream().map(productEntityMapper::toModel).collect(Collectors.toList());
     }
 
     @Override
     public Optional<Product> findById(Long id) {
         return this.jpaRepository.findById(id)
-                .map(productMapper::toModel);
+                .map(productEntityMapper::toModel);
     }
 
     @Override
     public Optional<Product> findByCode(String code) {
         return this.jpaRepository.findByCode(code)
-                .map(productMapper::toModel);
+                .map(productEntityMapper::toModel);
     }
 
     @Override
     public Product save(Product product) {
-        return productMapper.toModel(this.jpaRepository
-                .save(productMapper.toEntity(product)));
+        return productEntityMapper.toModel(this.jpaRepository
+                .save(productEntityMapper.toEntity(product)));
     }
 
     @Override

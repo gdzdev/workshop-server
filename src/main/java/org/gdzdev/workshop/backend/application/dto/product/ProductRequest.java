@@ -34,7 +34,4 @@ public class ProductRequest {
 
     @NotNull(message = "La categoría no puede ser nula")
     private Long categoryId;
-
-    @NotNull(message = "La disponibilidad no puede ser nula")
-    private Boolean available;
 }

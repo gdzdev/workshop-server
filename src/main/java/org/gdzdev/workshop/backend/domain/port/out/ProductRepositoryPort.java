@@ -1,9 +1,9 @@
 package org.gdzdev.workshop.backend.domain.port.out;
 
-import org.gdzdev.workshop.backend.domain.model.CartProduct;
-import org.gdzdev.workshop.backend.domain.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.gdzdev.workshop.backend.domain.model.Product;
+import org.gdzdev.workshop.backend.domain.model.CartProduct;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface ProductRepositoryPort {
 
     List<Product> findAll();
+
+    List<CartProduct> findAllByAvailable();
 
     Optional<CartProduct> findCartProduct(Long id);
 
