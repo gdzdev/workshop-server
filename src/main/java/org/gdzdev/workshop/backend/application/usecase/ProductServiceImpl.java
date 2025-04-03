@@ -14,7 +14,7 @@ import org.gdzdev.workshop.backend.domain.model.Product;
 import org.gdzdev.workshop.backend.domain.port.input.ProductService;
 import org.gdzdev.workshop.backend.domain.port.out.CategoryRepositoryPort;
 import org.gdzdev.workshop.backend.domain.port.out.ProductRepositoryPort;
-import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.ProductEntityMapper;
+import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.ProductMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductEntityMapper productMapper;
+    private final ProductMapper productMapper;
     private final CategoryRepositoryPort categoryRepository;
     private final ProductRepositoryPort productRepository;
 

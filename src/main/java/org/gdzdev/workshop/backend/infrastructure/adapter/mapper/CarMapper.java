@@ -5,8 +5,8 @@ import org.gdzdev.workshop.backend.infrastructure.adapter.entity.CartItemEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface CartEntityMapper {
+@Mapper(componentModel = "spring")
+public interface CarMapper {
 
     CartItemEntity toEntity(CartItem model);
 

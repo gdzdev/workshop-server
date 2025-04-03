@@ -9,8 +9,8 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface CategoryEntityMapper {
+@Mapper(componentModel = "spring")
+public interface CategoryMapper {
 
     Category toModel(CategoryEntity categoryEntity);
 

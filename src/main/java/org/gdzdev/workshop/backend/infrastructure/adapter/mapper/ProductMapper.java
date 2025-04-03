@@ -11,8 +11,8 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface ProductEntityMapper {
+@Mapper(componentModel = "spring")
+public interface ProductMapper {
 
     @Mapping(source = "categoryId", target = "category.id")
     Product toModel(ProductRequest productRequest);
