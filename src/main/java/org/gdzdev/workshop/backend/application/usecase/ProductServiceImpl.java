@@ -1,6 +1,7 @@
 package org.gdzdev.workshop.backend.application.usecase;
 
 import lombok.RequiredArgsConstructor;
+import org.gdzdev.workshop.backend.application.dto.PaginatedResponse;
 import org.gdzdev.workshop.backend.application.dto.product.ProductRequest;
 import org.gdzdev.workshop.backend.application.dto.product.ProductResponse;
 import org.gdzdev.workshop.backend.domain.exception.CategoryNotFoundException;
@@ -41,9 +42,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductResponse> fetchAllPaginated(Pageable pageable) {
-        return productRepository.findAllPaginated(pageable)
+    public PaginatedResponse<ProductResponse> fetchAllPaginated(Pageable pageable) {
+        Page<ProductResponse> page = this.productRepository.findAllPaginated(pageable)
                 .map(productMapper::toResponse);
+
+        return PaginatedResponse.<ProductResponse>builder()
+                .content(page.getContent())
+                .currentPage(page.getNumber() + 1)
+                .totalPages(page.getTotalPages())
+                .pageSize(page.getSize()).build();
     }
 
     @Override
