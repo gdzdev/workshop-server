@@ -7,10 +7,11 @@ import org.gdzdev.workshop.backend.domain.model.Product;
 import org.gdzdev.workshop.backend.infrastructure.adapter.entity.ProductEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ProductEntityMapper {
 
     @Mapping(source = "categoryId", target = "category.id")
