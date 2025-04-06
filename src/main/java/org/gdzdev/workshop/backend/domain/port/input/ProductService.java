@@ -5,7 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.gdzdev.workshop.backend.domain.model.CartProduct;
 import org.gdzdev.workshop.backend.application.dto.product.ProductRequest;
 import org.gdzdev.workshop.backend.application.dto.product.ProductResponse;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
@@ -23,6 +25,8 @@ public interface ProductService {
     ProductResponse create(ProductRequest productRequest);
 
     ProductResponse update(Long id, ProductRequest productRequest);
+
+    ProductResponse updateProductImage(Long id, MultipartFile image);
 
     void deleteById(Long id);
 }

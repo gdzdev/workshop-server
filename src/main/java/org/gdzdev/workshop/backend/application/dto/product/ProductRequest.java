@@ -18,8 +18,6 @@ public class ProductRequest {
     @Size(max = 100, message = "El nombre debe tener un máximo de 100 caracteres")
     private String name;
 
-    private String imageUrl;
-
     @NotNull(message = "El stock no puede ser nulo")
     @Min(value = 0, message = "El stock no puede ser negativo")
     private Integer stock;
