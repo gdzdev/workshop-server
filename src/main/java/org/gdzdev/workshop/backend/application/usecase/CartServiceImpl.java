@@ -1,126 +1,166 @@
 package org.gdzdev.workshop.backend.application.usecase;
 
 import lombok.RequiredArgsConstructor;
+import org.gdzdev.workshop.backend.domain.enums.CartStatus;
+import org.gdzdev.workshop.backend.domain.exception.*;
+import org.gdzdev.workshop.backend.domain.port.out.CartRepositoryPort;
 import org.springframework.stereotype.Service;
 import org.gdzdev.workshop.backend.domain.model.*;
-import org.gdzdev.workshop.backend.domain.enums.ItemType;
 import org.springframework.transaction.annotation.Transactional;
 import org.gdzdev.workshop.backend.domain.port.input.CartService;
 import org.gdzdev.workshop.backend.application.dto.cart.CartMessage;
 import org.gdzdev.workshop.backend.application.dto.cart.CartRequest;
-import org.gdzdev.workshop.backend.domain.port.out.CartRepositoryPort;
 import org.gdzdev.workshop.backend.domain.port.out.ProductRepositoryPort;
-import org.gdzdev.workshop.backend.domain.port.out.ServicingRepositoryPort;
-import org.gdzdev.workshop.backend.domain.exception.ProductNotFoundException;
-import org.gdzdev.workshop.backend.domain.exception.ProductNotAvailbleException;
-import org.gdzdev.workshop.backend.domain.exception.ServicingNotAvaibleException;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
-    private final CartRepositoryPort cartRepository;
+    private final CartRepositoryPort cartPort;
     private final ProductRepositoryPort productRepository;
-    private final ServicingRepositoryPort servicingRepository;
 
     @Override
-    @Transactional(readOnly = true)
-    public Cart getCart() {
-        List<CartItem> cartItems = cartRepository.findAllCartItems();
-        Cart cart = Cart.builder().cartItems(cartItems).build();
+    @Transactional
+    public Cart getActiveCart() {
+        Cart cart = this.cartPort.findByActiveCart()
+                .orElseGet(this::createCart);
         cart.calculateGrandTotal();
         return cart;
     }
 
     @Override
     @Transactional
-    public CartMessage addProductToCart(CartRequest request) {
+    public Cart createCart() {
+        cartPort.findAllByStatus(CartStatus.ACTIVE).forEach(cart -> {
+            cart.setStatus(CartStatus.ABANDONED);
+            cartPort.save(cart);
+        });
 
-        CartProduct cartProduct = this.productRepository.findCartProduct(request.getItemId())
-                .orElseThrow(() -> new ProductNotAvailbleException("The product you are trying to add does not exist"));
+        Cart newCart = Cart.builder()
+                .status(CartStatus.ACTIVE)
+                .grandTotal(BigDecimal.ZERO)
+                .build();
 
-        if (cartProduct.getStock() < request.getQuantity()) {
-            throw new ProductNotAvailbleException("There is not enough stock");
-        }
+        return cartPort.save(newCart);
+    }
 
-        CartItem cartItem = this.cartRepository.findCartItemByProductId(request.getItemId())
-                .orElseGet(() -> CartItem.builder()
-                        .product(cartProduct)
-                        .quantity(request.getQuantity())
-                        .type(ItemType.PRODUCT)
-                        .subTotal(cartProduct.getPrice().multiply(BigDecimal.valueOf(request.getQuantity())))
-                        .build());
-
-        this.cartRepository.save(cartItem);
-        return CartMessage.builder().cartMessage("Product added to cart").build();
+    @Override
+    @Transactional(readOnly = true)
+    public Integer getItemsCount() {
+        Cart cart = cartPort.findByActiveCart()
+                .orElseThrow(() -> new CartNotFoundException("No active cart found."));
+        return cart.getTotalItemsCount();
     }
 
     @Override
     @Transactional
-    public CartMessage addServicingToCart(CartRequest request) {
-        Servicing servicing = this.servicingRepository.findById(request.getItemId())
-                .orElseThrow(() -> new ServicingNotAvaibleException("The service you are trying to add does not exist"));
+    public CartMessage addProductToCart(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotAvailbleException("The product you are trying to add does not exist."));
 
-        CartItem cartItem = CartItem.builder()
-                .servicing(servicing)
-                .quantity(request.getQuantity())
-                .type(ItemType.SERVICE)
-                .subTotal(servicing.getPrice().multiply(BigDecimal.valueOf(request.getQuantity())))
-                .build();
+        Cart cart = getActiveCart();
 
-        this.cartRepository.save(cartItem);
-        return CartMessage.builder().cartMessage("Service added to cart").build();
+        Optional<CartItem> optionalItem = cart.getCartItems().stream()
+                .filter(item -> item.getProduct().getId().equals(product.getId()))
+                .findFirst();
+
+        if (optionalItem.isPresent()) {
+            CartItem existingItem = optionalItem.get();
+            if (existingItem.getQuantity() + 1 > product.getStock()) {
+                throw new ProductNotAvailbleException("Not enough stock to increase the quantity.");
+            }
+            existingItem.increaseQuantity();
+        } else {
+            if (product.getStock() < 1) {
+                throw new ProductNotAvailbleException("Product is out of stock.");
+            }
+
+            CartItem newItem = CartItem.builder()
+                    .product(product)
+                    .quantity(1)
+                    .unitPrice(product.getPrice())
+                    .build();
+
+            cart.addItem(newItem);
+        }
+
+        cart.calculateGrandTotal();
+        cartPort.save(cart);
+        return CartMessage.builder().cartMessage("Product added to cart successfully.").build();
     }
 
     @Override
     @Transactional
     public CartMessage removeProductFromCart(Long itemId) {
-        this.cartRepository.findCartItemById(itemId).ifPresentOrElse(cartItem ->
-                        this.cartRepository.removeFromCart(itemId), () -> {
-            throw new ProductNotFoundException("Product not found in cart");
-        });
-        return CartMessage.builder().cartMessage("Product removed from cart").build();
+        Cart cart = getActiveCart();
+
+        boolean removed = cart.removeItem(itemId);
+        if (!removed) {
+            throw new CartItemNotFoundException("Cart item not found.");
+        }
+
+        cart.calculateGrandTotal();
+        cartPort.save(cart);
+        return CartMessage.builder().cartMessage("Product removed from cart successfully.").build();
     }
 
     @Override
     @Transactional
     public CartMessage increaseItemQuantity(Long itemId) {
-        CartItem cartItem = this.cartRepository.findCartItemById(itemId)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found in cart"));
+        Cart cart = getActiveCart();
 
-        if (cartItem.getQuantity() + 1 > cartItem.getProduct().getStock()) {
-            throw new ProductNotAvailbleException("Cannot increase quantity, not enough stock");
+        CartItem item = cart.getCartItems().stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst()
+                .orElseThrow(() -> new CartItemNotFoundException("Cart item not found."));
+
+        if (item.getQuantity() + 1 > item.getProduct().getStock()) {
+            throw new ProductNotAvailbleException("Not enough stock to increase the quantity.");
         }
 
-        cartItem.increaseQuantity();
-        this.cartRepository.save(cartItem);
+        item.increaseQuantity();
+        cart.calculateGrandTotal();
+        cartPort.save(cart);
 
-        return CartMessage.builder().cartMessage("Increased item quantity").build();
+        return CartMessage.builder().cartMessage("Item quantity increased successfully.").build();
     }
 
     @Override
     @Transactional
     public CartMessage decreaseItemQuantity(Long itemId) {
-        CartItem cartItem = this.cartRepository.findCartItemById(itemId)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found in cart"));
+        Cart cart = getActiveCart();
 
-        if (cartItem.getQuantity() > 1) {
-            cartItem.decreaseQuantity();
-            this.cartRepository.save(cartItem);
-            return CartMessage.builder().cartMessage("Decreased item quantity").build();
+        CartItem item = cart.getCartItems().stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst()
+                .orElseThrow(() -> new CartItemNotFoundException("Cart item not found."));
+
+        item.decreaseQuantity();
+
+        if (item.getQuantity() <= 0) {
+            cart.removeItem(item.getId());
         }
 
-        this.cartRepository.removeFromCart(cartItem.getId());
-        return CartMessage.builder().cartMessage("Item removed from cart").build();
+        cart.calculateGrandTotal();
+        cartPort.save(cart);
+        return CartMessage.builder().cartMessage("Item quantity decreased successfully.").build();
     }
 
     @Override
     @Transactional
     public CartMessage emptyCart() {
-        this.cartRepository.emptyCart();
-        return CartMessage.builder().cartMessage("Cart is empty").build();
+        Cart cart = getActiveCart();
+
+        if (cart.getCartItems().isEmpty()) {
+            throw new EmptyCartOperationException("Cart is already empty.");
+        }
+
+        cart.clear();
+        cart.calculateGrandTotal();
+        cartPort.save(cart);
+        return CartMessage.builder().cartMessage("Cart emptied successfully.").build();
     }
 }
