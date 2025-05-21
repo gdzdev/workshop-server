@@ -6,11 +6,13 @@ import org.gdzdev.workshop.backend.domain.model.Cart;
 
 public interface CartService {
 
-    Cart getCart();
+    Cart getActiveCart();
 
-    CartMessage addProductToCart(CartRequest request);
+    Cart createCart();
 
-    CartMessage addServicingToCart(CartRequest request);
+    Integer getItemsCount();
+
+    CartMessage addProductToCart(Long productId);
 
     CartMessage removeProductFromCart(Long itemId);
 

@@ -1,21 +1,19 @@
 package org.gdzdev.workshop.backend.domain.port.out;
 
-import org.gdzdev.workshop.backend.domain.model.CartItem;
+import org.gdzdev.workshop.backend.domain.enums.CartStatus;
+import org.gdzdev.workshop.backend.domain.model.Cart;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CartRepositoryPort {
+    List<Cart> findAllByStatus(CartStatus status);
 
-    List<CartItem> findAllCartItems();
+    Optional<Cart> findById(Long cartId);
 
-    Optional<CartItem> findCartItemById(Long id);
+    Optional<Cart> findByActiveCart();
 
-    Optional<CartItem> findCartItemByProductId(Long productId);
+    Cart save(Cart cart);
 
-    CartItem save(CartItem cartItem);
-
-    void removeFromCart(Long itemId);
-
-    void emptyCart();
+    void deleteById(Long cartId);
 }

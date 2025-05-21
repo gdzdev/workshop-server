@@ -5,9 +5,8 @@ import org.gdzdev.workshop.backend.infrastructure.adapter.entity.ServicingEntity
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring")
-public interface ServicingMapper {
-
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface ServicingEntityMapper {
     Servicing toModel(ServicingEntity servicingEntity);
     ServicingEntity toEntity(Servicing servicing);
 }

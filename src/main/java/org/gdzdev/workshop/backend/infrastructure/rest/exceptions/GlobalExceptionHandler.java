@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MultipartException;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -28,4 +29,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ApiResponse.builder()
                 .response(response).status("failed").build(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(MultipartException.class)
+    public ResponseEntity<String> handleMultipartException(MultipartException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Error: La solicitud debe ser multipart/form-data");
+    }
+    
 }

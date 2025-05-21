@@ -1,16 +1,15 @@
 package org.gdzdev.workshop.backend.infrastructure.rest.exceptions;
 
 import org.gdzdev.workshop.backend.application.dto.ApiResponse;
-import org.gdzdev.workshop.backend.domain.exception.ProductNotExistsException;
+import org.gdzdev.workshop.backend.domain.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.gdzdev.workshop.backend.domain.exception.ProductNotFoundException;
-import org.gdzdev.workshop.backend.domain.exception.ProductNotAvailbleException;
-import org.gdzdev.workshop.backend.domain.exception.ProductAlreadyExistsException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,6 +54,36 @@ public class ProductExceptionHandler {
         response.put("status", HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(ApiResponse.builder()
                 .response(response).status("failed").build(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ImageProcessingException.class)
+    public ResponseEntity<ApiResponse<?>> handleImageProcessing(ImageProcessingException exception) {
+        return buildErrorResponse(exception.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ApiResponse<?>> handleMaxSizeException(MaxUploadSizeExceededException exception) {
+        return buildErrorResponse("Image size exceeds the allowed limit.", HttpStatus.PAYLOAD_TOO_LARGE);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<?>> handleIllegalArgument(IllegalArgumentException exception) {
+        return buildErrorResponse(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseEntity<ApiResponse<?>> buildErrorResponse(String message, HttpStatus status) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", message);
+        response.put("timestamp", LocalDate.now());
+        response.put("status", status.value());
+
+        return new ResponseEntity<>(
+                ApiResponse.builder()
+                        .response(response)
+                        .status("failed")
+                        .build(),
+                status
+        );
     }
 }
 

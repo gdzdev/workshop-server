@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.gdzdev.workshop.backend.domain.model.CartProduct;
 import org.gdzdev.workshop.backend.domain.model.Product;
 import org.gdzdev.workshop.backend.domain.port.out.ProductRepositoryPort;
-import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.ProductMapper;
+import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.ProductEntityMapper;
 import org.gdzdev.workshop.backend.infrastructure.adapter.repos.ProductJpaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductJpaAdapter implements ProductRepositoryPort {
 
-    private final ProductMapper productEntityMapper;
+    private final ProductEntityMapper productEntityMapper;
     private final ProductJpaRepository jpaRepository;
 
     @Override

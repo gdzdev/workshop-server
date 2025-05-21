@@ -14,11 +14,12 @@ import org.gdzdev.workshop.backend.domain.model.Product;
 import org.gdzdev.workshop.backend.domain.port.input.ProductService;
 import org.gdzdev.workshop.backend.domain.port.out.CategoryRepositoryPort;
 import org.gdzdev.workshop.backend.domain.port.out.ProductRepositoryPort;
-import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.ProductMapper;
+import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.ProductEntityMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductMapper productMapper;
+    private final ProductEntityMapper productMapper;
     private final CategoryRepositoryPort categoryRepository;
     private final ProductRepositoryPort productRepository;
 
@@ -97,6 +98,11 @@ public class ProductServiceImpl implements ProductService {
             productDb.setCategory(category);
             return productMapper.toResponse(this.productRepository.save(productDb));
         }).orElseThrow(() -> new ProductNotExistsException("Product with id " + id + " cannot be updated"));
+    }
+
+    @Override
+    public ProductResponse updateProductImage(Long id, MultipartFile image) {
+        return null;
     }
 
     @Override

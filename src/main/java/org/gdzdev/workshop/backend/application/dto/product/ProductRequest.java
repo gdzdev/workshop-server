@@ -14,11 +14,14 @@ public class ProductRequest {
     @Size(max = 10, message = "El código debe tener un máximo de 10 caracteres")
     private String code;
 
+    // TODO: verify that imageUrl field is a image
+    @NotNull(message = "La image es requerida.")
+    @Size(max = 100, message = "La imagen debe pesar maximo 11mb")
+    private String imageUrl;
+
     @NotBlank(message = "El nombre no puede estar vacío")
     @Size(max = 100, message = "El nombre debe tener un máximo de 100 caracteres")
     private String name;
-
-    private String imageUrl;
 
     @NotNull(message = "El stock no puede ser nulo")
     @Min(value = 0, message = "El stock no puede ser negativo")

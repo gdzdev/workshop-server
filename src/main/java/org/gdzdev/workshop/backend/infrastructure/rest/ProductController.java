@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.gdzdev.workshop.backend.application.dto.ApiResponse;
 import org.gdzdev.workshop.backend.domain.port.input.ProductService;
 import org.gdzdev.workshop.backend.application.dto.product.ProductRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin(origins = {"https://simplified-inventory-management.vercel.app", "*"})
 @RestController
@@ -58,6 +59,12 @@ public class ProductController {
     public ResponseEntity<ApiResponse<?>> modify(@PathVariable Long id, @Valid @RequestBody ProductRequest productRequest) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .response(this.useCase.update(id, productRequest)).status("success").build());
+    }
+
+    @PatchMapping("/{id}/image")
+    public ResponseEntity<ApiResponse<?>> updateProductImage(@PathVariable Long id, @RequestParam("image") MultipartFile imageFile) {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .response(this.useCase.updateProductImage(id, imageFile)).status("success").build());
     }
 
     @DeleteMapping("/{id}")
