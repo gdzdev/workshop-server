@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 @Setter
 @Builder
 public class CartItem {
-
     private Long id;
     private Integer quantity;
     private BigDecimal subtotal;
@@ -33,6 +32,7 @@ public class CartItem {
     }
 
     private void calculateSubTotal() {
+        // TODO: check out if method is possible unnecessary implementation
         this.subtotal = product.getPrice()
                 .multiply(BigDecimal.valueOf(quantity));
     }
