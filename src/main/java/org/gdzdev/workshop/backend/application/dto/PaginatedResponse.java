@@ -10,7 +10,6 @@ import java.util.List;
 @Setter
 @Builder
 public class PaginatedResponse<T> {
-
     private List<T> content;
     private int currentPage;
     private int totalPages;

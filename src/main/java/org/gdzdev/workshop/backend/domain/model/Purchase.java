@@ -3,9 +3,11 @@ package org.gdzdev.workshop.backend.domain.model;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.gdzdev.workshop.backend.infrastructure.adapter.entity.CartItemEntity;
+import org.gdzdev.workshop.backend.infrastructure.adapter.entity.ProductEntity;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,24 +16,27 @@ import java.util.List;
 @Setter
 @Getter
 @Builder
-public class Purchases {
+public class Purchase {
+    private String provider;
     private int count;
     private BigDecimal discount;
     private BigDecimal totalPrice;
-    private List<String> products;
 
     @Builder.Default
-    public List<CartItem> cartItems = new ArrayList<>();
+    private List<CartItemEntity> cartItems = new ArrayList<>();
     @Builder.Default
-    public List<CartProduct> cartProducts = new ArrayList<>();
+    private List<ProductEntity> cartProducts = new ArrayList<>();
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public BigDecimal calculateTotalPrice() {
         BigDecimal itemsTotal = cartItems.stream()
-                .map(CartItem::getSubTotal)
+                .map(CartItemEntity::getSubTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         BigDecimal productsTotal = cartProducts.stream()
-                .map(CartProduct::getPrice)
+                .map(ProductEntity::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         this.totalPrice = itemsTotal.add(productsTotal);

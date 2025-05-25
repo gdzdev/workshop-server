@@ -28,12 +28,17 @@ public class CartItem {
     }
 
     public BigDecimal getSubTotal() {
-        return subtotal = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+        if (unitPrice != null && quantity != null) {
+            return unitPrice.multiply(BigDecimal.valueOf(quantity));
+        }
+        return BigDecimal.ZERO;
     }
 
     private void calculateSubTotal() {
-        // TODO: check out if method is possible unnecessary implementation
-        this.subtotal = product.getPrice()
-                .multiply(BigDecimal.valueOf(quantity));
+        if (unitPrice != null && quantity != null) {
+            this.subtotal = unitPrice.multiply(BigDecimal.valueOf(quantity));
+        } else {
+            this.subtotal = BigDecimal.ZERO; // Or handle nulls as appropriate
+        }
     }
 }
