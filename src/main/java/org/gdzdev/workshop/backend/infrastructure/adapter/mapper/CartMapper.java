@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class CartMapper {
-
-    private final CartItemMapper cartItemMapper;
+    private CartItemMapper cartItemMapper;
 
     public CartMapper(CartItemMapper cartItemMapper) {
         this.cartItemMapper = cartItemMapper;

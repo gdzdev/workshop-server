@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 @Getter @Setter
 @Table(name = "cart_items")
 public class CartItemEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

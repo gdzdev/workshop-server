@@ -22,7 +22,6 @@ public class Cart {
     @Builder.Default
     private List<CartItem> cartItems = new ArrayList<>();
 
-
     public void calculateGrandTotal() {
         if (cartItems == null || cartItems.isEmpty()) {
             this.grandTotal = BigDecimal.ZERO;

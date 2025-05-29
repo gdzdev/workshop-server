@@ -8,13 +8,13 @@ import java.math.BigDecimal;
 @Setter
 @Builder
 public class CartItem {
-
     private Long id;
     private Integer quantity;
     private BigDecimal subtotal;
     private BigDecimal unitPrice;
 
     private Product product;
+    private Cart cart;
 
     public void increaseQuantity() {
         this.quantity++;
@@ -29,11 +29,17 @@ public class CartItem {
     }
 
     public BigDecimal getSubTotal() {
-        return subtotal = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+        if (unitPrice != null && quantity != null) {
+            return unitPrice.multiply(BigDecimal.valueOf(quantity));
+        }
+        return BigDecimal.ZERO;
     }
 
     private void calculateSubTotal() {
-        this.subtotal = product.getPrice()
-                .multiply(BigDecimal.valueOf(quantity));
+        if (unitPrice != null && quantity != null) {
+            this.subtotal = unitPrice.multiply(BigDecimal.valueOf(quantity));
+        } else {
+            this.subtotal = BigDecimal.ZERO; // Or handle nulls as appropriate
+        }
     }
 }

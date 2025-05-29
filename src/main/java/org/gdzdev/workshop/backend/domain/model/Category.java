@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 public class Category {
-
     private Long id;
     private String name;
     private String description;
