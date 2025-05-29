@@ -14,6 +14,7 @@ public class CartItem {
     private BigDecimal unitPrice;
 
     private Product product;
+    private Cart cart;
 
     public void increaseQuantity() {
         this.quantity++;

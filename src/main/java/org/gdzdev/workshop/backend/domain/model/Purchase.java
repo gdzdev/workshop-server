@@ -24,8 +24,8 @@ public class Purchase {
 
     @Builder.Default
     private List<CartItemEntity> cartItems = new ArrayList<>();
-    @Builder.Default
-    private List<ProductEntity> cartProducts = new ArrayList<>();
+//    @Builder.Default
+//    private List<ProductEntity> cartProducts = new ArrayList<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -35,11 +35,12 @@ public class Purchase {
                 .map(CartItemEntity::getSubTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal productsTotal = cartProducts.stream()
-                .map(ProductEntity::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+//        BigDecimal productsTotal = cartProducts.stream()
+//                .map(ProductEntity::getPrice)
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        this.totalPrice = itemsTotal.add(productsTotal);
+//        this.totalPrice = itemsTotal.add(productsTotal);
+        this.totalPrice = itemsTotal;
         return this.totalPrice;
     }
 

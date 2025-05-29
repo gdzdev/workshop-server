@@ -63,6 +63,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     @Transactional
     public PurchaseResponse getPurchaseById(Long id) {
+
         // TODO: should create a dto for validate this parameter
         if (id == null) throw new RuntimeException("El campo id es requerido.");
         if (id <= 0) throw new RuntimeException("El campo id debe de ser mayor de 0.");

@@ -39,9 +39,9 @@ public class PurchasesEntity {
     private List<CartItemEntity> cartItems = new ArrayList<>();
 
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id")
-    private List<ProductEntity> cartProducts = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "cart_id")
+//    private List<ProductEntity> cartProducts = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at")
