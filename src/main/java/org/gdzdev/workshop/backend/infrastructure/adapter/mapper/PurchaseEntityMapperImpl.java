@@ -1,6 +1,8 @@
 package org.gdzdev.workshop.backend.infrastructure.adapter.mapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.gdzdev.workshop.backend.application.dto.purchase.PurchaseRequest;
 import org.gdzdev.workshop.backend.application.dto.purchase.PurchaseResponse;
 import org.gdzdev.workshop.backend.domain.model.CartItem;
@@ -10,12 +12,14 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class PurchaseEntityMapperImpl {
-    private CartItemMapper cartItemMapper;
+    private final CartItemMapper cartItemMapper;
 
     public PurchaseResponse entityToResponse(PurchasesEntity purchase) {
         if (purchase == null) return null;
@@ -46,25 +50,29 @@ public class PurchaseEntityMapperImpl {
         );
     }
 
-    public  List<PurchaseResponse> entityListToResponseList(List<PurchasesEntity> entities) {
+    public List<PurchaseResponse> entityListToResponseList(List<PurchasesEntity> entities) {
+        if (entities.isEmpty()) return new ArrayList<>();
+
         return entities.stream()
                 .map(this::entityToResponse)
                 .toList();
     }
 
-    public  PurchasesEntity requestToEntity(PurchaseRequest request) {
+    public PurchasesEntity requestToEntity(PurchaseRequest request) {
         if (request == null) return null;
 
         PurchasesEntity entity = new PurchasesEntity();
+
         List<CartItemEntity> items = request.getCartItems()
                 .stream()
-                .map(this.cartItemMapper::modelToEntity)
+                .map(cartItemMapper::toEntity)
                 .toList();
 
         entity.setProvider(request.getProvider());
         entity.setTotalPrice(request.getTotalPrice());
+        entity.setDiscount(request.getDiscount());
         entity.setCartItems(items);
-        entity.setCount(request.getCartItems().toArray().length);
+        entity.setCount(request.getCartItems().size());
 
         return entity;
     }

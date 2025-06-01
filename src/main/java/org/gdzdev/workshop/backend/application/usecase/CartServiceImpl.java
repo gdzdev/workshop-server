@@ -9,7 +9,6 @@ import org.gdzdev.workshop.backend.domain.model.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.gdzdev.workshop.backend.domain.port.input.CartService;
 import org.gdzdev.workshop.backend.application.dto.cart.CartMessage;
-import org.gdzdev.workshop.backend.application.dto.cart.CartRequest;
 import org.gdzdev.workshop.backend.domain.port.out.ProductRepositoryPort;
 
 import java.math.BigDecimal;

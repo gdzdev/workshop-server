@@ -31,7 +31,7 @@ public class PurchaseController {
                     );
         } catch (Exception e) {
             return ResponseEntity
-                    .status(HttpStatus.CREATED)
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ApiResponse
                             .builder()
                             .response(e.getMessage())
@@ -53,7 +53,7 @@ public class PurchaseController {
                     );
         }catch (Exception e) {
             return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ApiResponse.builder()
                             .response(e.getMessage())
                             .status("failed")
@@ -75,7 +75,7 @@ public class PurchaseController {
                     );
         } catch (Exception e) {
             return ResponseEntity
-                    .status(HttpStatus.OK)
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ApiResponse
                             .builder()
                             .response(e.getMessage())
@@ -98,7 +98,7 @@ public class PurchaseController {
                     );
         } catch (Exception e) {
             return ResponseEntity
-                    .status(HttpStatus.OK)
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ApiResponse
                             .builder()
                             .response(e.getMessage())
