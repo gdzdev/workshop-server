@@ -2,6 +2,7 @@ package org.gdzdev.workshop.backend.application.usecase;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
 import org.gdzdev.workshop.backend.application.dto.purchase.PurchaseRequest;
 import org.gdzdev.workshop.backend.application.dto.purchase.PurchaseResponse;
@@ -57,13 +58,14 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         if (purchases.isEmpty()) return new ArrayList<>();
 
+        log.info("purchases: " + purchases);
+
         return purchases;
     }
 
     @Override
     @Transactional
     public PurchaseResponse getPurchaseById(Long id) {
-
         // TODO: should create a dto for validate this parameter
         if (id == null) throw new RuntimeException("El campo id es requerido.");
         if (id <= 0) throw new RuntimeException("El campo id debe de ser mayor de 0.");

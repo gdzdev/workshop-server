@@ -33,15 +33,15 @@ public class PurchasesEntity {
     @Column(nullable = false)
     private BigDecimal discount;
 
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id")
+    // This defines the one-to-many relationship with CartItemEntity.
+    // 'mappedBy = "purchase"' indicates that the 'purchase' field in CartItemEntity
+    // is the owner of this relationship.
+    // cascade = CascadeType.ALL ensures that operations (like persist, remove) on PurchasesEntity
+    // are cascaded to its associated CartItemEntity objects.
+    // orphanRemoval = true means if a CartItem is removed from the 'cartItems' collection,
+    // it will be deleted from the database.
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItemEntity> cartItems = new ArrayList<>();
-
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "cart_id")
-//    private List<ProductEntity> cartProducts = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at")
@@ -50,4 +50,16 @@ public class PurchasesEntity {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    // Helper method to add CartItemEntity to the list
+    public void addCartItem(CartItemEntity cartItem) {
+        this.cartItems.add(cartItem);
+        cartItem.setPurchase(this); // Set the back-reference
+    }
+
+    // Helper method to remove CartItemEntity from the list
+    public void removeCartItem(CartItemEntity cartItem) {
+        this.cartItems.remove(cartItem);
+        cartItem.setPurchase(null); // Remove the back-reference
+    }
 }
