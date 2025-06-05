@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.gdzdev.workshop.backend.domain.enums.CartStatus;
-import org.gdzdev.workshop.backend.domain.exception.ProductNotFoundException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,11 +24,9 @@ public class Cart {
     public void calculateGrandTotal() {
         if (cartItems == null || cartItems.isEmpty()) {
             this.grandTotal = BigDecimal.ZERO;
-            System.out.println("total if: " + this.grandTotal);
         } else {
             this.grandTotal = cartItems.stream().map(CartItem::getSubTotal)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
-            System.out.println("total else: " + this.grandTotal);
         }
     }
 
