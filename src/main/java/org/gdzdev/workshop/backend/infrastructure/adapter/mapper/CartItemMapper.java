@@ -19,9 +19,9 @@ public class CartItemMapper {
     private final ProductEntityMapper productMapper;
 
     public CartItem toDomain(CartItemEntity entity) {
-        log.info("CartItemEntity 💸: " + entity.getProduct().getName());
         if (entity == null) return null;
 
+        log.info("CartItemEntity 💸: " + entity.getProduct().getName());
         return CartItem.builder()
                 .id(entity.getId())
                 .quantity(entity.getQuantity())
@@ -29,7 +29,7 @@ public class CartItemMapper {
                 .unitPrice(entity.getUnitPrice())
                 .product(productMapper.toModel(entity.getProduct()))
                 // Only map cart if it exists in the entity and is relevant for the domain model
-                .cart(entity.getCart() != null ? Cart.builder().id(entity.getCart().getId()).build() : null) // Example if you want to map cart ID
+                // .cart(entity.getCart() != null ? Cart.builder().id(entity.getCart().getId()).build() : null) // Example if you want to map cart ID
                 .build();
     }
 
@@ -69,7 +69,7 @@ public class CartItemMapper {
     public List<CartItemEntity> toList(List<CartItem> models) {
         if (models == null) return new ArrayList<>();
         return models.stream()
-                .map(this::toEntity) // Use the simplified toEntity method here
+                .map(this::toEntity)
                 .toList();
     }
 }

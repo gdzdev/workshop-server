@@ -27,6 +27,7 @@ public class CartMapper {
                 .status(entity.getStatus())
                 .grandTotal(entity.getGrandTotal())
                 .cartItems(items)
+                
                 .build();
     }
 

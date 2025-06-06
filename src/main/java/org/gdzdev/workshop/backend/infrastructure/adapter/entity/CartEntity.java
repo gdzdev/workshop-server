@@ -13,7 +13,6 @@ import java.util.List;
 @Getter @Setter
 @Table(name = "carts")
 public class CartEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,6 +24,6 @@ public class CartEntity {
     @Column(nullable = false)
     private CartStatus status;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true) // Changed "product" to "cart"
     private List<CartItemEntity> cartItems = new ArrayList<>();
 }
