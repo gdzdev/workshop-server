@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class ProductRequest {
 
     @NotBlank(message = "El código no puede estar vacío")
-    @Size(max = 10, message = "El código debe tener un máximo de 10 caracteres")
+    @Size(max = 36, message = "El código debe tener un máximo de 10 caracteres")
     private String code;
 
     // TODO: verify that imageUrl field is a image

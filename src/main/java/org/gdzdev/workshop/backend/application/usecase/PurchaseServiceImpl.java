@@ -4,16 +4,20 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.gdzdev.workshop.backend.application.dto.PaginatedResponse;
 import org.gdzdev.workshop.backend.application.dto.purchase.PurchaseRequest;
 import org.gdzdev.workshop.backend.application.dto.purchase.PurchaseResponse;
 import org.gdzdev.workshop.backend.domain.exception.InternalServerErrorException;
 import org.gdzdev.workshop.backend.domain.exception.PurchaseNotFoundException;
 import org.gdzdev.workshop.backend.domain.port.input.PurchaseService;
 
+import org.gdzdev.workshop.backend.domain.port.out.PurchaseRepositoryPort;
 import org.gdzdev.workshop.backend.infrastructure.adapter.entity.PurchasesEntity;
 import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.PurchaseEntityMapperImpl;
 import org.gdzdev.workshop.backend.infrastructure.adapter.repos.PurchaseJpaRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,6 +29,7 @@ import java.util.List;
 public class PurchaseServiceImpl implements PurchaseService {
     private final PurchaseEntityMapperImpl _mapper;
     private final PurchaseJpaRepository _repository;
+    private final PurchaseRepositoryPort _purchaseRepositoryPort;
 
     @Override
     public PurchaseResponse createPurchase(PurchaseRequest purchase) {
@@ -58,8 +63,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         if (purchases.isEmpty()) return new ArrayList<>();
 
-        log.info("purchases: " + purchases);
-
         return purchases;
     }
 
@@ -84,5 +87,18 @@ public class PurchaseServiceImpl implements PurchaseService {
         if (purchases.isEmpty()) return new ArrayList<>();
 
         return this._mapper.entityListToResponseList(purchases);
+    }
+
+    @Override
+    @Transactional
+    public PaginatedResponse<PurchaseResponse> fetchAllPaginated(Pageable pageable) {
+        Page<PurchaseResponse> page = this._purchaseRepositoryPort.findAllPaginated(pageable).map(this._mapper::toResponse);
+        return PaginatedResponse
+                .<PurchaseResponse>builder()
+                .content(page.getContent())
+                .currentPage(page.getNumber())
+                .pageSize(page.getSize())
+                .totalPages(page.getTotalPages())
+                .build();
     }
 }
