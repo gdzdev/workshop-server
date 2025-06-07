@@ -78,12 +78,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponse create(MultipartFile file, ProductRequest productRequest) {
+    public ProductResponse create(ProductRequest productRequest) {
         this.productRepository.findByCode(productRequest.getCode()).ifPresent(product -> {
             throw new ProductAlreadyExistsException(String.format("Product with code %s already exists", productRequest.getCode()));
         });
 
-        if (file.isEmpty() && productRequest.getImageUrl().isEmpty()) throw new RuntimeException("");
+        if (productRequest.getFile().isEmpty() && productRequest.getImageUrl().isEmpty()) throw new RuntimeException("");
 
         Category category = categoryRepository.findById(productRequest.getCategoryId())
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
@@ -91,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productMapper.toModel(productRequest);
 
         try{
-            String url = this.cloudinaryService.uploadImage(file);
+            String url = this.cloudinaryService.uploadImage(productRequest.getFile());
 
             product.setCategory(category);
 

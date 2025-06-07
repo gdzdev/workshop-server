@@ -52,7 +52,7 @@ public class ProductController {
     @PostMapping(consumes= {"multipart/form-data"})
     public ResponseEntity<ApiResponse<?>> create(@Valid @ModelAttribute ProductRequest productRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.builder().response(this.useCase.create(productRequest.getFile(), productRequest)).status("success").build());
+                .body(ApiResponse.builder().response(this.useCase.create(productRequest)).status("success").build());
     }
 
     @PutMapping("/{id}")
