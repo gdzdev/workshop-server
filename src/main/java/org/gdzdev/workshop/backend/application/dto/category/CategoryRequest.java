@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -20,4 +21,6 @@ public class CategoryRequest {
 
     @JsonProperty("image_url")
     private String imageUrl;
+
+    MultipartFile file;
 }

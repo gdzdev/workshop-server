@@ -36,8 +36,8 @@ public class CategoryController {
                 .response(this.useCase.fetchByName(name)).status("success").build());
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<?>> create(@Valid @RequestBody CategoryRequest request) {
+    @PostMapping(consumes = { "multipart/form-data" })
+    public ResponseEntity<ApiResponse<?>> create(@Valid @ModelAttribute CategoryRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
                 .response(this.useCase.create(request)).status("success").build());
     }

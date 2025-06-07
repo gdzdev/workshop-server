@@ -23,7 +23,7 @@ public interface ProductService {
 
     ProductResponse fetchById(Long id);
 
-    ProductResponse create(MultipartFile file, ProductRequest productRequest);
+    ProductResponse create(ProductRequest productRequest);
 
     ProductResponse update(Long id, ProductRequest productRequest);
 
