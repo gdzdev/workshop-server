@@ -33,6 +33,7 @@ public class CartItemMapper {
                 .build();
     }
 
+
     // This method is for mapping a CartItem domain object to a CartItemEntity
     // for a new purchase. The 'cart' field of CartItem will be null.
     public CartItemEntity toEntity(CartItem domain) { // Simplified method, no 'cartEntity' parameter
@@ -50,6 +51,9 @@ public class CartItemMapper {
         // strategy or remain null if not applicable for a purchase.
         // If CartItemEntity has a 'purchase' field, that's where the link is made.
         // For new purchase items, the 'cart' field in CartItemEntity should typically be null.
+
+
+        // el error ocurre aqui
         entity.setCart(null); // Explicitly set to null for new purchase items to avoid issues if not mapped
         return entity;
     }

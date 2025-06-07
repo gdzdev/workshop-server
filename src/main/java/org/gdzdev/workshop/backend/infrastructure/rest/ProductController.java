@@ -49,10 +49,10 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.builder().response(this.useCase.fetchById(id)).status("success").build());
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<?>> create(@Valid @RequestBody ProductRequest productRequest) {
+    @PostMapping(consumes= {"multipart/form-data"})
+    public ResponseEntity<ApiResponse<?>> create(@Valid @ModelAttribute ProductRequest productRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.builder().response(this.useCase.create(productRequest)).status("success").build());
+                .body(ApiResponse.builder().response(this.useCase.create(productRequest.getFile(), productRequest)).status("success").build());
     }
 
     @PutMapping("/{id}")
