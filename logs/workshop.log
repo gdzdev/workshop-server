@@ -1,3 +1,0 @@
-2025-05-29T22:41:22.290-07:00  WARN 19172 --- [workshop-server] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-05-29T22:44:00.356-07:00  INFO 19172 --- [workshop-server] [http-nio-3000-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2025-05-29T22:44:00.363-07:00  INFO 19172 --- [workshop-server] [http-nio-3000-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms

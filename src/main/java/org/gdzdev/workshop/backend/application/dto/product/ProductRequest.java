@@ -2,6 +2,7 @@ package org.gdzdev.workshop.backend.application.dto.product;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
@@ -19,9 +20,10 @@ public class ProductRequest {
     @Size(max = 100, message = "La imagen debe pesar maximo 11mb")
     private String imageUrl;
 
-    @NotBlank(message = "El nombre no puede estar vacío")
-    @Size(max = 100, message = "El nombre debe tener un máximo de 100 caracteres")
+    @Size(max = 250, message = "El nombre debe tener un máximo de 250 caracteres")
     private String name;
+
+    private MultipartFile file;
 
     @NotNull(message = "El stock no puede ser nulo")
     @Min(value = 0, message = "El stock no puede ser negativo")
