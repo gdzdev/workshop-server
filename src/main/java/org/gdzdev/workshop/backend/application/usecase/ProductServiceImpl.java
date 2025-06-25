@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
 
         return PaginatedResponse.<ProductResponse>builder()
                 .content(page.getContent())
-                .currentPage(page.getNumber() + 1)
+                .currentPage(page.getNumber())
                 .totalPages(page.getTotalPages())
                 .pageSize(page.getSize()).build();
     }

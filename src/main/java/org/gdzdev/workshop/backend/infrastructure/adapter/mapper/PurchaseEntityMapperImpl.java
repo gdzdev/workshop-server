@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.gdzdev.workshop.backend.application.dto.purchase.PurchaseRequest;
 import org.gdzdev.workshop.backend.application.dto.purchase.PurchaseResponse;
 import org.gdzdev.workshop.backend.domain.model.CartItem;
+import org.gdzdev.workshop.backend.domain.model.Purchase;
 import org.gdzdev.workshop.backend.infrastructure.adapter.entity.CartItemEntity;
 import org.gdzdev.workshop.backend.infrastructure.adapter.entity.PurchasesEntity;
 import org.springframework.stereotype.Component;
@@ -50,6 +51,24 @@ public class PurchaseEntityMapperImpl {
         );
     }
 
+    public Purchase toModel(PurchasesEntity entity) {
+        if (entity == null) return null;
+
+        List<CartItem> cartItems = entity.getCartItems().stream().map(this.cartItemMapper::toDomain).toList();
+
+        return Purchase
+                .builder()
+                .id(entity.getId())
+                .provider(entity.getProvider())
+                .count(entity.getCount())
+                .discount(entity.getDiscount())
+                .totalPrice(entity.getTotalPrice())
+                .cartItems(cartItems)
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
+                .build();
+    }
+
     public List<PurchaseResponse> entityListToResponseList(List<PurchasesEntity> entities) {
         if (entities.isEmpty()) return new ArrayList<>();
 
@@ -76,13 +95,25 @@ public class PurchaseEntityMapperImpl {
 
         return entity;
     }
+
+    public PurchaseResponse toResponse(Purchase model) {
+        if (model == null) return null;
+
+        return new PurchaseResponse(
+                model.getId(),
+                model.getProvider(),
+                model.getCount(),
+                model.getTotalPrice(),
+                model.getDiscount(),
+                model.getCartItems(),
+                model.getCreatedAt(),
+                model.getUpdatedAt()
+        );
+    }
 }
-
-
 
 //PurchasesEntity modelToEntity(Purchase model);
 //PurchasesEntity responseToEntity(PurchaseResponse response);
 //Purchase responseToModel(PurchaseResponse response);
-//Purchase entityToModel(PurchasesEntity entity);
 //PurchaseResponse entityToResponse(PurchasesEntity entity);
 //PurchasesEntity requestToEntity(PurchaseRequest request);

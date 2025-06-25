@@ -1,5 +1,6 @@
 package org.gdzdev.workshop.backend.domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,14 +17,16 @@ import java.util.List;
 @Setter
 @Getter
 @Builder
+@AllArgsConstructor
 public class Purchase {
+    private Long id;
     private String provider;
     private int count;
     private BigDecimal discount;
     private BigDecimal totalPrice;
 
     @Builder.Default
-    private List<CartItemEntity> cartItems = new ArrayList<>();
+    private List<CartItem> cartItems = new ArrayList<>();
 //    @Builder.Default
 //    private List<ProductEntity> cartProducts = new ArrayList<>();
 
@@ -32,7 +35,7 @@ public class Purchase {
 
     public BigDecimal calculateTotalPrice() {
         BigDecimal itemsTotal = cartItems.stream()
-                .map(CartItemEntity::getSubTotal)
+                .map(CartItem::getSubTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
 //        BigDecimal productsTotal = cartProducts.stream()

@@ -1,7 +1,9 @@
 package org.gdzdev.workshop.backend.domain.port.input;
 
+import org.gdzdev.workshop.backend.application.dto.PaginatedResponse;
 import org.gdzdev.workshop.backend.application.dto.purchase.PurchaseRequest;
 import org.gdzdev.workshop.backend.application.dto.purchase.PurchaseResponse;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -12,4 +14,5 @@ public interface PurchaseService {
     List<PurchaseResponse> getAllPurchases();
     PurchaseResponse getPurchaseById(Long id);
     List<PurchaseResponse> searchPurchase(String provider);
+    PaginatedResponse<PurchaseResponse> fetchAllPaginated(Pageable pageable);
 }
