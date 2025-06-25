@@ -6,7 +6,9 @@ import org.gdzdev.workshop.backend.application.dto.category.CategoryResponse;
 import org.gdzdev.workshop.backend.domain.exception.CategoryAlreadyExistsException;
 import org.gdzdev.workshop.backend.domain.exception.CategoryNotExistsException;
 import org.gdzdev.workshop.backend.domain.exception.CategoryNotFoundException;
+import org.gdzdev.workshop.backend.domain.model.Category;
 import org.gdzdev.workshop.backend.domain.port.input.CategoryService;
+import org.gdzdev.workshop.backend.domain.port.input.CloudinaryService;
 import org.gdzdev.workshop.backend.domain.port.out.CategoryRepositoryPort;
 import org.gdzdev.workshop.backend.infrastructure.adapter.mapper.CategoryEntityMapper;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryEntityMapper _categoryMapper;
     private final CategoryRepositoryPort _categoryRepository;
+    private final CloudinaryService _cloudinary;
 
     @Override
     public List<CategoryResponse> fetchAll() {
@@ -45,7 +48,19 @@ public class CategoryServiceImpl implements CategoryService {
         this._categoryRepository.findByName(categoryRequest.getName()).ifPresent(categoryDb -> {
             throw new CategoryAlreadyExistsException(String.format("Category with name '%s' already exists", categoryRequest.getName()));
         });
-        return this._categoryMapper.toResponse(this._categoryRepository.save(this._categoryMapper.toModel(categoryRequest)));
+
+        Category category = this._categoryMapper.toModel(categoryRequest);
+
+        try {
+            if (!categoryRequest.getFile().isEmpty()) {
+                String url = this._cloudinary.uploadImage(categoryRequest.getFile());
+                category.setImageUrl(url);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return this._categoryMapper.toResponse(this._categoryRepository.save(category));
     }
 
     @Override

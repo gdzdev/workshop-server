@@ -1,6 +1,8 @@
 package org.gdzdev.workshop.backend.application.usecase;
 
 import lombok.RequiredArgsConstructor;
+
+import lombok.extern.slf4j.Slf4j;
 import org.gdzdev.workshop.backend.application.dto.PaginatedResponse;
 import org.gdzdev.workshop.backend.application.dto.product.ProductRequest;
 import org.gdzdev.workshop.backend.application.dto.product.ProductResponse;
@@ -23,6 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import org.gdzdev.workshop.backend.domain.port.input.CloudinaryService;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -30,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductEntityMapper productMapper;
     private final CategoryRepositoryPort categoryRepository;
     private final ProductRepositoryPort productRepository;
+    private final CloudinaryService cloudinaryService;
 
     @Override
     @Transactional(readOnly = true)
@@ -49,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
 
         return PaginatedResponse.<ProductResponse>builder()
                 .content(page.getContent())
-                .currentPage(page.getNumber() + 1)
+                .currentPage(page.getNumber())
                 .totalPages(page.getTotalPages())
                 .pageSize(page.getSize()).build();
     }
@@ -69,17 +75,31 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
     }
 
+
     @Override
     @Transactional
     public ProductResponse create(ProductRequest productRequest) {
         this.productRepository.findByCode(productRequest.getCode()).ifPresent(product -> {
             throw new ProductAlreadyExistsException(String.format("Product with code %s already exists", productRequest.getCode()));
         });
+
+        if (productRequest.getFile().isEmpty() && productRequest.getImageUrl().isEmpty()) throw new RuntimeException("");
+
         Category category = categoryRepository.findById(productRequest.getCategoryId())
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
+
         Product product = productMapper.toModel(productRequest);
 
-        product.setCategory(category);
+        try{
+            String url = this.cloudinaryService.uploadImage(productRequest.getFile());
+
+            product.setCategory(category);
+
+            if (!url.isBlank()) product.setImageUrl(url);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
         return productMapper.toResponse(this.productRepository.save(product));
     }
 

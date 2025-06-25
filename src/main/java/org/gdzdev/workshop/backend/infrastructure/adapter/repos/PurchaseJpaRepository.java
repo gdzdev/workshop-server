@@ -19,6 +19,8 @@ public interface PurchaseJpaRepository extends JpaRepository<PurchasesEntity, Lo
     Optional<PurchasesEntity> findByCount(int count);
     Optional<PurchasesEntity> findByTotalPrice(BigDecimal totalPrice);
 
+
+
     @Query(value = "SELECT * FROM purchases ORDER BY created_at DESC LIMIT 1", nativeQuery = true)
     Optional<PurchasesEntity> findLastPurchase();
     @Query(value = "SELECT * FROM purchases WHERE DATE_FORMAT(created_at, '%Y-%m') = DATE_FORMAT(CURRENT_DATE(), '%Y-%m') ORDER BY created_at DESC LIMIT 1", nativeQuery = true)
