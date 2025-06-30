@@ -22,6 +22,7 @@ target/
 *.txt
 .env
 .env.prod
+.env.test
 
 /src/main/resources/import.sql
 /src/main/resources/application-prod.properties

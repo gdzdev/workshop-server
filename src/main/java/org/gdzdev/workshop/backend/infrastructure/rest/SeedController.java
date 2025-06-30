@@ -35,6 +35,17 @@ public class SeedController {
                     );
         }
     }
+
+    @GetMapping("/isSeeded")
+    public ResponseEntity<ApiResponse<?>> isSeeded() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse
+                        .builder()
+                        .response("Is seeded 😊")
+                        .build()
+                );
+    }
 }
 
 // "Cannot suppress a null exception."
