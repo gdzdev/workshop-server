@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -24,17 +25,20 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private java.util.UUID id;
 
-    @Column(nullable = false, length = 35, unique = true)
+    @Column(nullable = false, unique = true)
     private String code;
 
     @Column(nullable = false, length = 100)
     private String login;
 
+    @Column(nullable = false, length = 100)
+    private String lastName;
+
     @Column(nullable = false, length = 100, unique = true)
     private String password;
 
-    @Column(name = "phone_number", unique = true, nullable = false, length = 8)
-    private String phoneNumber;
+    @Column(unique = true, nullable = false)
+    private String email;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -47,6 +51,13 @@ public class UserEntity implements UserDetails {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void generateCode() {
+        if (this.code == null || this.code.isEmpty()) {
+            this.code = UUID.randomUUID().toString();
+        }
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

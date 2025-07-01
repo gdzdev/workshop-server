@@ -1,6 +1,7 @@
-package org.gdzdev.workshop.backend.application.usecase;
+package org.gdzdev.workshop.backend.application.usecase.carts;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.gdzdev.workshop.backend.domain.enums.CartStatus;
 import org.gdzdev.workshop.backend.domain.exception.*;
 import org.gdzdev.workshop.backend.domain.port.out.CartRepositoryPort;
@@ -14,6 +15,7 @@ import org.gdzdev.workshop.backend.domain.port.out.ProductRepositoryPort;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
@@ -46,9 +48,25 @@ public class CartServiceImpl implements CartService {
         return cartPort.save(newCart);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     @Transactional(readOnly = true)
     public Integer getItemsCount() {
+        log.info("\n\n\nInteger getItemsCount()\n\n\n");
         Cart cart = cartPort.findByActiveCart()
                 .orElseThrow(() -> new CartNotFoundException("No active cart found."));
         return cart.getTotalItemsCount();
@@ -57,6 +75,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartMessage addProductToCart(Long productId) {
+        log.info("CartMessage addProductToCart(Long productId)\n\n");
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotAvailbleException("The product you are trying to add does not exist."));
 
@@ -94,6 +113,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartMessage removeProductFromCart(Long itemId) {
+        log.info("CartMessage removeProductFromCart(Long itemId)\n\n\n");
         Cart cart = getActiveCart();
 
         boolean removed = cart.removeItem(itemId);
@@ -109,6 +129,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartMessage increaseItemQuantity(Long itemId) {
+        log.info("CartMessage increaseItemQuantity(Long itemId)\n\n\n");
         Cart cart = getActiveCart();
 
         CartItem item = cart.getCartItems().stream()
@@ -130,6 +151,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartMessage decreaseItemQuantity(Long itemId) {
+        log.info("CartMessage decreaseItemQuantity(Long itemId)\n\n\n");
         Cart cart = getActiveCart();
 
         CartItem item = cart.getCartItems().stream()
@@ -151,6 +173,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartMessage emptyCart() {
+        log.info("CartMessage emptyCart()\n\n\n");
         Cart cart = getActiveCart();
 
         if (cart.getCartItems().isEmpty()) {

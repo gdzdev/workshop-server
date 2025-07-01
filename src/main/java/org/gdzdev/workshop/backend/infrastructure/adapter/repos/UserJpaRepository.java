@@ -11,6 +11,6 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByCode(String code);
     UserDetails findByLogin(String login);
 
-    long deleteByPhoneNumber(String phoneNumber);
+    long deleteByEmail(String email);
     long deleteByCode(String code);
 }

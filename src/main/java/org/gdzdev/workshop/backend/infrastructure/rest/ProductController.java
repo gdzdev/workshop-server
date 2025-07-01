@@ -12,7 +12,6 @@ import org.gdzdev.workshop.backend.domain.port.input.ProductService;
 import org.gdzdev.workshop.backend.application.dto.product.ProductRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-@CrossOrigin(origins = {"https://simplified-inventory-management.vercel.app", "*"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/products")

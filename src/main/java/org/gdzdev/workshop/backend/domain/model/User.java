@@ -15,8 +15,9 @@ public class User {
     private java.util.UUID id;
     private String code;
     private String name;
+    private String lastName;
     private String password;
-    private String number;
+    private String email;
     private UserRole role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
