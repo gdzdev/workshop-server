@@ -28,6 +28,7 @@ public class AuthConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET, "/seeder/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/sales/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/products").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/v1/purchase").hasRole("ADMIN")
@@ -38,7 +39,6 @@ public class AuthConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/v1/products").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/purchase").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/categories").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.POST, "/api/v1/books").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
