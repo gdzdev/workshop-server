@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = {"https://simplified-inventory-management.vercel.app", "*"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/carts")
@@ -16,10 +15,18 @@ public class CartController {
 
     private final CartService useCase;
 
+    // ✅
     @GetMapping("/active")
     public ResponseEntity<ApiResponse<?>> getActiveCart() {
         return ResponseEntity.ok(ApiResponse.builder()
                 .response(this.useCase.getActiveCart()).status("success").build());
+    }
+
+    // ✅
+    @PostMapping
+    public ResponseEntity<ApiResponse<?>> createCart() {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
+                .response(this.useCase.createCart()).status("success").build());
     }
 
     @GetMapping("/active/items/count")
@@ -28,11 +35,6 @@ public class CartController {
                 .response(this.useCase.getItemsCount()).status("success").build());
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<?>> createCart() {
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
-                .response(this.useCase.createCart()).status("success").build());
-    }
 
     @PatchMapping("/active/items")
     public ResponseEntity<ApiResponse<?>> addProductToCart(@RequestParam Long productId) {
