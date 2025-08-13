@@ -24,4 +24,4 @@ contained severus libraries like:
 - MySQL Connector/J.
 - Cloudinary HTTP5.
 - Project Lombok.
-- Springdoc OpenAPI Starter WebMVC UI.
+- Springdoc OpenAPI Starter WebMVC UI
